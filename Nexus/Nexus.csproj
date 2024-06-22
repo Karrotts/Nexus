@@ -14,4 +14,8 @@
       <OutputPath>..\Nexus.Godot\lib\Nexus</OutputPath>
     </PropertyGroup>
 
+    <ItemGroup>
+      <Folder Include="Exceptions\" />
+    </ItemGroup>
+
 </Project>
