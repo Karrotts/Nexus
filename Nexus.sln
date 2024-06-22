@@ -1,0 +1,22 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexus", "Nexus\Nexus.csproj", "{73457B27-CA23-4263-867C-4BB0EC39FAA5}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Nexus.Test", "Nexus.Test\Nexus.Test.csproj", "{05C44B4E-3B23-416D-917A-4D759A1801EE}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{73457B27-CA23-4263-867C-4BB0EC39FAA5}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{73457B27-CA23-4263-867C-4BB0EC39FAA5}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{73457B27-CA23-4263-867C-4BB0EC39FAA5}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{73457B27-CA23-4263-867C-4BB0EC39FAA5}.Release|Any CPU.Build.0 = Release|Any CPU
+		{05C44B4E-3B23-416D-917A-4D759A1801EE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{05C44B4E-3B23-416D-917A-4D759A1801EE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{05C44B4E-3B23-416D-917A-4D759A1801EE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{05C44B4E-3B23-416D-917A-4D759A1801EE}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+EndGlobal

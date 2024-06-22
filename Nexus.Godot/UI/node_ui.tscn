@@ -1,0 +1,39 @@
+[gd_scene load_steps=6 format=3 uid="uid://ch1kpr3r0as54"]
+
+[ext_resource type="Script" path="res://Scripts/CoreNodes/Godot/Nodes/NodeElement.cs" id="1_uqyic"]
+[ext_resource type="PackedScene" uid="uid://bk21f657anhh6" path="res://UI/node_header.tscn" id="2_3560m"]
+[ext_resource type="PackedScene" uid="uid://eqjqmnpactp2" path="res://UI/node_input.tscn" id="3_b4e4m"]
+[ext_resource type="PackedScene" uid="uid://d1hqpmqagrqy5" path="res://UI/node_output.tscn" id="4_xksfb"]
+
+[sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s45qx"]
+bg_color = Color(0.23617, 0.257406, 0.291382, 1)
+
+[node name="NodeUI" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+
+[node name="NodeElement" type="PanelContainer" parent="."]
+layout_mode = 0
+offset_left = 200.0
+offset_top = 87.0
+offset_right = 397.0
+offset_bottom = 117.0
+pivot_offset = Vector2(0, -1)
+mouse_filter = 2
+mouse_default_cursor_shape = 1
+theme_override_styles/panel = SubResource("StyleBoxFlat_s45qx")
+script = ExtResource("1_uqyic")
+NodeHeader = ExtResource("2_3560m")
+NodeInput = ExtResource("3_b4e4m")
+NodeOutput = ExtResource("4_xksfb")
+
+[node name="Container" type="VBoxContainer" parent="NodeElement"]
+layout_mode = 2
+mouse_filter = 2
+mouse_default_cursor_shape = 3
+theme_override_constants/separation = 0
