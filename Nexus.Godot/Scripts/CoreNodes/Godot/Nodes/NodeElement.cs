@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Nexus;
 using Nexus.Elements.Basic;
+using Nexus.Elements.Display;
 
 namespace Nexus.Godot.UI
 {
@@ -14,6 +15,10 @@ namespace Nexus.Godot.UI
 		public PackedScene NodeInput;
 		[Export] 
 		public PackedScene NodeOutput;
+		[Export] 
+		public PackedScene SelectListElement;
+		[Export] 
+		public PackedScene DisplayElement;
 
 		private LineRenderer _lineRenderer;
 		private NodeManager _nodeManager;
@@ -26,8 +31,6 @@ namespace Nexus.Godot.UI
 		public INexus Node;
 		public override void _Ready()
 		{
-			Node = new MathNexus();
-			
 			_headerHovered = false;
 			_isDragging = false;
 			_inputs = new();
@@ -43,6 +46,7 @@ namespace Nexus.Godot.UI
 			
 			VBoxContainer container = GetNode<VBoxContainer>("Container");
 			CreateHeader(container);
+			CreateStatics(container);
 			CreateOutputs(container);
 			CreateInputs(container);
 		}
@@ -123,6 +127,38 @@ namespace Nexus.Godot.UI
 				output.GetMarker().MouseExited += () => _nodeManager.HoveredIo = null;
 				container.AddChild(output);
 			}
+		}
+
+		private void CreateStatics(VBoxContainer container)
+		{
+			foreach (NexusStatic staticItem in Node.GetAllStatics())
+			{
+				if (staticItem.IsListType)
+				{
+					CreateListStatic(staticItem.GetList(), container);
+					continue;
+				}
+				if (staticItem.Type == typeof(string))
+				{
+					CreateDisplayStatic(container);
+				}
+			}
+		}
+
+		private void CreateDisplayStatic(VBoxContainer container)
+		{
+			//TODO: make this work with any nexus item
+			DisplayElement displayElement = DisplayElement.Instantiate<DisplayElement>();
+			displayElement.SetDisplay(() => (Node as OutputNexus).Output.Value.ToString());
+			container.AddChild(displayElement);
+		}
+
+		private void CreateListStatic(ISelectableList selectableList, VBoxContainer container)
+		{
+			SelectListElement selectListElement = SelectListElement.Instantiate<SelectListElement>();
+			selectListElement.SetOptions(selectableList.GetOptions(), selectableList.GetIndexOfSelected());
+			selectListElement.GetOptionsButton().ItemSelected += (selected) => selectableList.SetSelected((int)selected);
+			container.AddChild(selectListElement);
 		}
 	}
 }

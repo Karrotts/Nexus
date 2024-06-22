@@ -6,5 +6,6 @@ public interface INexus
     object? GetPropValue(string propName);
     Dictionary<string, Type> GetInputs();
     Dictionary<string, Type> GetOutputs();
-    
+    List<NexusStatic> GetAllStatics();
+
 }

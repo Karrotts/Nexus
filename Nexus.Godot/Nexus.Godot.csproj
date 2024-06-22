@@ -10,4 +10,7 @@
       <HintPath>lib\Nexus\net8.0\Nexus.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Scripts\CoreNodes\Custom\" />
+  </ItemGroup>
 </Project>

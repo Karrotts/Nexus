@@ -1,5 +1,8 @@
 using Godot;
 using System;
+using Nexus;
+using Nexus.Elements.Basic;
+using Nexus.Elements.Display;
 using Nexus.Godot;
 using Nexus.Godot.UI;
 
@@ -20,9 +23,12 @@ public partial class NodeManager : Node
 
     private LineRenderer _lineRenderer;
     private ulong? _currentlyDraggingNode;
+    private string _nodeElementPath = "res://UI/node_element.tscn";
+    private PackedScene _nodeElementScene;
 
     public override void _Ready()
     {
+        _nodeElementScene = ResourceLoader.Load(_nodeElementPath) as PackedScene;
         _lineRenderer = GetNode<LineRenderer>("/root/LineRenderer");
     }
 
@@ -46,6 +52,11 @@ public partial class NodeManager : Node
                 Color = Colors.Aqua,
             });
         }
+
+        if (Input.IsActionJustPressed("ui_accept"))
+        {
+            HandleNodeCreate();
+        }
     }
 
     private void HandleNodeIoSelection()
@@ -59,6 +70,27 @@ public partial class NodeManager : Node
             return;
         }
         SelectedIo = null;
+    }
+
+    private void HandleNodeCreate()
+    {
+        // should add this to a specific container but this is fine for now.
+        NodeElement element = _nodeElementScene.Instantiate<NodeElement>();
+        element.Node = new MathNexus()
+        {
+            InputA = new NexusInput<double>(() => 42),
+            InputB = new NexusInput<double>(() => 23)
+        };
+        AddChild(element);
+        
+        NodeElement element2 = _nodeElementScene.Instantiate<NodeElement>();
+        element2.Node = new OutputNexus()
+        {
+            DisplayInput = new NexusInput<double>(() => 0)
+        };
+        AddChild(element2);
+        
+        Nexus.Nexus.ConnectOutputToInput(element.Node, element2.Node, "OutputC", "DisplayInput");
     }
     
 }
