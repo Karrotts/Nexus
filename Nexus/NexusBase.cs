@@ -54,6 +54,20 @@ public class NexusBase : INexus
         return GetAllOfType(typeof(NexusOutput<>));
     }
 
+    public List<NexusStatic> GetAllStatics()
+    {
+        List<NexusStatic> resultList = new List<NexusStatic>();
+        FieldInfo[] fields = GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+        foreach (FieldInfo field in fields)
+        {
+            if (field.FieldType == typeof(NexusStatic))
+            {
+                NexusStatic instance = (NexusStatic)field.GetValue(this);
+                resultList.Add(instance);
+            }
+        }
+        return resultList;
+    }
 
     private Dictionary<string, Type> GetAllOfType(Type type)
     {

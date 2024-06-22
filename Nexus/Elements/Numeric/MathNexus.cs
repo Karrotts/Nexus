@@ -4,14 +4,14 @@ namespace Nexus.Elements.Basic;
 
 public class MathNexus : NexusBase
 {
-    public readonly NexusStatic<NexusSelectableList<MathOperations>> Operations;
+    public readonly NexusStatic Operations;
     public NexusInput<Double> InputA { get; set; }
     public NexusInput<Double> InputB { get; set; }
     public NexusOutput<Double> OutputC { get; set; }
 
     public MathNexus()
     {
-        Operations = new NexusStatic<NexusSelectableList<MathOperations>>(
+        Operations = new NexusStatic(
              new NexusSelectableList<MathOperations>(new List<MathOperations>()
              {
                  MathOperations.ADD,
@@ -25,7 +25,7 @@ public class MathNexus : NexusBase
         InputB = new NexusInput<double>(() => 0);
         OutputC = new NexusOutput<Double>(() =>
         {
-            switch (Operations.Value.Selected)
+            switch ((Operations.Value as NexusSelectableList<MathOperations>).Selected)
             {
                 case MathOperations.ADD: return InputA.Value + InputB.Value;
                 case MathOperations.SUBSTRACT: return InputA.Value - InputB.Value;

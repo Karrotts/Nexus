@@ -2,7 +2,7 @@
 
 namespace Nexus;
 
-public class NexusSelectableList<T>
+public class NexusSelectableList<T> : ISelectableList
 {
     public T Selected
     {
@@ -57,5 +57,49 @@ public class NexusSelectableList<T>
             throw new Exception("Selectable list must contain at least one option, instead found none. Did you initialize this list?");
         _options = options;
         
+    }
+
+    public List<string> GetOptions()
+    {
+        return OptionsAsStringList();
+    }
+
+    public int GetIndexOfSelected()
+    {
+        return Options.IndexOf(Selected);
+    }
+
+    public void SetSelected(string value)
+    {
+        foreach (var option in Options)
+        {
+            if (Enum.GetName(typeof(T), option) == value)
+            {
+                Selected = option;
+                return;
+            }
+
+            if (option.ToString() == value)
+            {
+                Selected = (T)Convert.ChangeType(value, typeof(T));
+                return;
+            }
+        }
+    }
+    
+    public void SetSelected(int index)
+    {
+        if (index < 0 || index >= Options.Count)
+            throw new Exception("Option was not in the selectable range.");
+        Selected = Options[index];
+    }
+
+    public string GetSelected()
+    {
+        if (Selected is Enum)
+        {
+            return Enum.GetName(Selected.GetType(), Selected);
+        }
+        return Selected.ToString();
     }
 }
