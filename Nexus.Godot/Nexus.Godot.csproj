@@ -6,8 +6,8 @@
     <EnableDynamicLoading>true</EnableDynamicLoading>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="Nodes">
-      <HintPath>Nodes.dll</HintPath>
+    <Reference Include="Nexus">
+      <HintPath>lib\Nexus\net8.0\Nexus.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

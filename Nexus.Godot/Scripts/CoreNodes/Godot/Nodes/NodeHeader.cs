@@ -2,7 +2,7 @@ using Godot;
 using System;
 
 
-namespace GNodes.UI
+namespace Nexus.Godot.UI
 {
 	public partial class NodeHeader : Control
 	{

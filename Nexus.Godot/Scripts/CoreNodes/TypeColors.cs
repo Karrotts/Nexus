@@ -1,7 +1,7 @@
 ﻿using System;
 using Godot;
 
-namespace GNodes.UI.Scripts;
+namespace Nexus.Godot.UI.Scripts;
 
 public static class TypeColors
 {

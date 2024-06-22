@@ -1,10 +1,10 @@
 using Godot;
 using System;
 using System.Collections.Generic;
-using Nodes;
-using Nodes.nodes.basic;
+using Nexus;
+using Nexus.Elements.Basic;
 
-namespace GNodes.UI
+namespace Nexus.Godot.UI
 {
 	public partial class NodeElement : PanelContainer
 	{
@@ -23,10 +23,10 @@ namespace GNodes.UI
 		private List<NodeInput> _inputs;
 		private List<NodeOutput> _outputs;
 	
-		public INode Node;
+		public INexus Node;
 		public override void _Ready()
 		{
-			Node = new AdderNode<int>();
+			Node = new MathNexus();
 			
 			_headerHovered = false;
 			_isDragging = false;

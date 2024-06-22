@@ -1,6 +1,6 @@
-﻿using GNodes.UI;
+﻿using Nexus.Godot.UI;
 
-namespace GNodes;
+namespace Nexus.Godot;
 
 public class NodeIoInformation(NodeElement element, string ioName, bool isInput)
 {

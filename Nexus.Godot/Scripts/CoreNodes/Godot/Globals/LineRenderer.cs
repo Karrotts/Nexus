@@ -1,7 +1,7 @@
 using Godot;
 using Godot.Collections;
 
-namespace GNodes;
+namespace Nexus.Godot;
 
 public partial class LineRenderer : Control
 {

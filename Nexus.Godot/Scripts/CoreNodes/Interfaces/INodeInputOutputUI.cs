@@ -1,7 +1,7 @@
 ﻿using System;
 using Godot;
 
-namespace GNodes;
+namespace Nexus.Godot;
 
 public interface INodeInputOutputUI
 {

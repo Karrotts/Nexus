@@ -1,8 +1,8 @@
 ﻿using Godot;
 using System;
-using GNodes.UI.Scripts;
+using Nexus.Godot.UI.Scripts;
 
-namespace GNodes.UI
+namespace Nexus.Godot.UI
 {
     public partial class NodeOutput : Control, INodeInputOutputUI
     {

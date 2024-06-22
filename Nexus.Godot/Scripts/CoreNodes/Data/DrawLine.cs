@@ -1,6 +1,6 @@
 ﻿using Godot;
 
-namespace GNodes;
+namespace Nexus.Godot;
 
 public partial class DrawLine : GodotObject
 {

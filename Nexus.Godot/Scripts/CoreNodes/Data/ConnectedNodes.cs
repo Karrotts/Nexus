@@ -1,7 +1,6 @@
-﻿using GNodes.UI;
-using Nodes;
+﻿using Nexus.Godot.UI;
 
-namespace GNodes;
+namespace Nexus.Godot;
 
 public class ConnectedNodes
 {

@@ -1,7 +1,7 @@
 using Godot;
 using System;
-using GNodes;
-using GNodes.UI;
+using Nexus.Godot;
+using Nexus.Godot.UI;
 
 public partial class NodeManager : Node
 {
