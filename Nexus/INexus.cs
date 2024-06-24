@@ -7,5 +7,6 @@ public interface INexus
     Dictionary<string, Type> GetInputs();
     Dictionary<string, Type> GetOutputs();
     List<NexusStatic> GetAllStatics();
-
+    List<NexusDisplay> GetAllDisplays();
+    string GetUUID();
 }

@@ -2,9 +2,9 @@
 
 namespace Nexus.Godot;
 
-public class NodeIoInformation(NodeElement element, string ioName, bool isInput)
+public class NodeIoInformation(NodeElement element, INodeInputOutputUI io, bool isInput)
 {
     public NodeElement Element { get; } = element;
-    public string IoName { get; } = ioName;
+    public INodeInputOutputUI Io { get; } = io;
     public bool IsInput { get; } = isInput;
 }

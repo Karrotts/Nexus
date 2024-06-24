@@ -14,7 +14,7 @@ public partial class LineRenderer : Control
             DrawLine(line.From, line.To, line.Color, (float)line.Size);
         }
     }
-
+    
     public void AddLine(string id, DrawLine line)
     {
         _lines.Add(id, line);
@@ -44,12 +44,7 @@ public partial class LineRenderer : Control
 
     public void RemoveLine(string id)
     {
-        if (!_lines.ContainsKey(id))
-        {
-            GD.Print("Line does not exist with key: " + id);
-            return;
-        }
-
+        if (!_lines.ContainsKey(id)) return;
         _lines.Remove(id);
         QueueRedraw();
     }

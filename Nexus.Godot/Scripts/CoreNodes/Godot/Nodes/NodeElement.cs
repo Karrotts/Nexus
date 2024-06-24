@@ -19,6 +19,8 @@ namespace Nexus.Godot.UI
 		public PackedScene SelectListElement;
 		[Export] 
 		public PackedScene DisplayElement;
+		[Export] 
+		public PackedScene NumberInput;
 
 		private LineRenderer _lineRenderer;
 		private NodeManager _nodeManager;
@@ -46,6 +48,7 @@ namespace Nexus.Godot.UI
 			
 			VBoxContainer container = GetNode<VBoxContainer>("Container");
 			CreateHeader(container);
+			CreateDisplays(container);
 			CreateStatics(container);
 			CreateOutputs(container);
 			CreateInputs(container);
@@ -110,7 +113,7 @@ namespace Nexus.Godot.UI
 				NodeInput input = NodeInput.Instantiate<NodeInput>();
 				input.SetDetails(s, Node.GetInputs()[s]);
 				_inputs.Add(input);
-				input.GetMarker().MouseEntered += () => _nodeManager.HoveredIo = new NodeIoInformation(this, s, true);
+				input.GetMarker().MouseEntered += () => _nodeManager.HoveredIo = new NodeIoInformation(this, input, true);
 				input.GetMarker().MouseExited += () => _nodeManager.HoveredIo = null;
 				container.AddChild(input);
 			}
@@ -123,7 +126,7 @@ namespace Nexus.Godot.UI
 				NodeOutput output = NodeOutput.Instantiate<NodeOutput>();
 				output.SetDetails(s, Node.GetOutputs()[s]);
 				_outputs.Add(output);
-				output.GetMarker().MouseEntered += () => _nodeManager.HoveredIo = new NodeIoInformation(this, s, false);
+				output.GetMarker().MouseEntered += () => _nodeManager.HoveredIo = new NodeIoInformation(this, output, false);
 				output.GetMarker().MouseExited += () => _nodeManager.HoveredIo = null;
 				container.AddChild(output);
 			}
@@ -138,19 +141,24 @@ namespace Nexus.Godot.UI
 					CreateListStatic(staticItem.GetList(), container);
 					continue;
 				}
-				if (staticItem.Type == typeof(string))
+
+				if (staticItem.Type == typeof(double))
 				{
-					CreateDisplayStatic(container);
+					NumberInput numberInput = NumberInput.Instantiate<NumberInput>();
+					numberInput.GetSpinBox().ValueChanged += value => staticItem.Value = value;
+					container.AddChild(numberInput);
 				}
 			}
 		}
 
-		private void CreateDisplayStatic(VBoxContainer container)
+		private void CreateDisplays(VBoxContainer container)
 		{
-			//TODO: make this work with any nexus item
-			DisplayElement displayElement = DisplayElement.Instantiate<DisplayElement>();
-			displayElement.SetDisplay(() => (Node as OutputNexus).Output.Value.ToString());
-			container.AddChild(displayElement);
+			foreach (var display in Node.GetAllDisplays())
+			{
+				DisplayElement displayElement = DisplayElement.Instantiate<DisplayElement>();
+				displayElement.SetDisplay(() => display.Value);
+				container.AddChild(displayElement);	
+			}
 		}
 
 		private void CreateListStatic(ISelectableList selectableList, VBoxContainer container)

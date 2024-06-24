@@ -1,5 +1,5 @@
 ﻿namespace Nexus;
 
-public class NexusInput<T>(NexusIO<T>.GetValue getter) : NexusIO<T>(getter)
+public class NexusInput<T>(INexusIO.GetterDelegate getter) : NexusIO<T>(getter)
 {
 }

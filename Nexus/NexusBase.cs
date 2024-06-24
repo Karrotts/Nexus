@@ -69,6 +69,26 @@ public class NexusBase : INexus
         return resultList;
     }
 
+    public List<NexusDisplay> GetAllDisplays()
+    {
+        List<NexusDisplay> resultList = new List<NexusDisplay>();
+        FieldInfo[] fields = GetType().GetFields(BindingFlags.Public | BindingFlags.Instance);
+        foreach (FieldInfo field in fields)
+        {
+            if (field.FieldType == typeof(NexusDisplay))
+            {
+                NexusDisplay instance = (NexusDisplay)field.GetValue(this);
+                resultList.Add(instance);
+            }
+        }
+        return resultList;
+    }
+
+    public string GetUUID()
+    {
+        return UUID;
+    }
+
     private Dictionary<string, Type> GetAllOfType(Type type)
     {
         Dictionary<string, Type> nodeInputProperties = new Dictionary<string, Type>();

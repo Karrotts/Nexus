@@ -12,6 +12,11 @@ namespace Nexus.Godot.UI
             return GetNode<ColorRect>("OutputPoint");
         }
 
+        public string GetLabelName()
+        {
+            return SlotName;
+        }
+
         public void SetDetails(string labelText, Type type)
         {
             SlotName = labelText;
