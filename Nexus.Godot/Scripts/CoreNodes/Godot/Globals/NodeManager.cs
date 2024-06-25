@@ -4,11 +4,12 @@ using System.Collections.Generic;
 using System.Linq;
 using Nexus;
 using Nexus.Elements.Basic;
+using Nexus.Elements.Boolean;
 using Nexus.Elements.Display;
 using Nexus.Godot;
 using Nexus.Godot.UI;
 
-public partial class NodeManager : Node
+public partial class NodeManager : Node2D
 {
     public ulong? CurrentlyDraggingNode
     {
@@ -22,6 +23,7 @@ public partial class NodeManager : Node
 
     public NodeIoInformation SelectedIo { get; set; }
     public NodeIoInformation HoveredIo { get; set; }
+    public bool IsMovingCamera { get; set; }
 
     private LineRenderer _lineRenderer;
     private ulong? _currentlyDraggingNode;
@@ -41,8 +43,35 @@ public partial class NodeManager : Node
         HandleDrawLineFromSelected();
         HandleNodeConnect();
         HandleNodeIoSelection();
-        DemoHandleNexusSpawn();
         HandleLineUpdate();
+    }
+    
+    public void HandleNodeCreate(NexusOption option)
+    {
+        // should add this to a specific container but this is fine for now.
+        NodeElement element = _nodeElementScene.Instantiate<NodeElement>();
+        element.Position = _lineRenderer.GlobalPosition - element.Size / 2;
+        switch (option)
+        {
+            case NexusOption.MATH: 
+                element.Node = new MathNexus();
+                break;
+            case NexusOption.TEXT_DISPLAY:
+                element.Node = new OutputNexus();
+                break;
+            case NexusOption.NUMBER_INPUT:
+                element.Node = new NumberInputNexus();
+                break;
+            case NexusOption.BOOLEAN_INPUT:
+                element.Node = new BooleanNexus();
+                break;
+            case NexusOption.LOGIC:
+                element.Node = new LogicNexus();
+                break;
+            case NexusOption.BYTE:
+                break;
+        }
+        AddChild(element);
     }
 
     private void HandleDrawLineFromSelected()
@@ -54,7 +83,7 @@ public partial class NodeManager : Node
             _lineRenderer.CreateOrUpdate("mouseLine", new DrawLine()
             {
                 From = SelectedIo.Io.GetMarker().GlobalPosition + offset,
-                To = GetViewport().GetMousePosition(),
+                To = GetGlobalMousePosition(),
                 Color = GetLineColor()
             });
         }
@@ -144,25 +173,6 @@ public partial class NodeManager : Node
         }
         SelectedIo = null;
     }
-
-    private void HandleNodeCreate(string nexusName)
-    {
-        // should add this to a specific container but this is fine for now.
-        NodeElement element = _nodeElementScene.Instantiate<NodeElement>();
-        switch (nexusName)
-        {
-            case "math": 
-                element.Node = new MathNexus();
-                break;
-            case "display":
-                element.Node = new OutputNexus();
-                break;
-            case "numberInput":
-                element.Node = new NumberInputNexus();
-                break;
-        }
-        AddChild(element);
-    }
     
     private void RemoveAllConnectionsToInput(NodeIoInformation input, bool setSelectedToOutput = false)
     {
@@ -228,23 +238,5 @@ public partial class NodeManager : Node
     private List<ConnectedIO> GetConnectionsFrom(NodeIoInformation ioInformation)
     {
         return _connections.Where(item => item.From.Element == ioInformation.Element).ToList();
-    }
-
-    private void DemoHandleNexusSpawn()
-    {
-        if (Input.IsActionJustPressed("ui_right"))
-        {
-            HandleNodeCreate("math");
-        }
-        
-        if (Input.IsActionJustPressed("ui_left"))
-        {
-            HandleNodeCreate("display");
-        }
-
-        if (Input.IsActionJustPressed("ui_up"))
-        {
-            HandleNodeCreate("numberInput");
-        }
     }
 }

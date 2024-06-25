@@ -1,9 +1,10 @@
 ﻿namespace Nexus;
 
-public class NexusStatic(object value)
+public class NexusStatic(object value, string label = "")
 {
     public object Value = value;
     public Type Type = value.GetType();
+    public string Label = label;
 
     public bool IsListType
     {

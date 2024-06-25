@@ -21,6 +21,8 @@ namespace Nexus.Godot.UI
 		public PackedScene DisplayElement;
 		[Export] 
 		public PackedScene NumberInput;
+		[Export] 
+		public PackedScene BooleanInput;
 
 		private LineRenderer _lineRenderer;
 		private NodeManager _nodeManager;
@@ -79,6 +81,7 @@ namespace Nexus.Godot.UI
 
 		private void HandleDrag()
 		{
+			if (_nodeManager.IsMovingCamera) return;
 			Vector2 mousePos = GetViewport().GetMousePosition();
 			if (_headerHovered && Input.IsMouseButtonPressed(MouseButton.Left) && !_isDragging && _nodeManager.CurrentlyDraggingNode == null)
 			{
@@ -147,6 +150,14 @@ namespace Nexus.Godot.UI
 					NumberInput numberInput = NumberInput.Instantiate<NumberInput>();
 					numberInput.GetSpinBox().ValueChanged += value => staticItem.Value = value;
 					container.AddChild(numberInput);
+				}
+
+				if (staticItem.Type == typeof(bool))
+				{
+					BooleanInput booleanInput = BooleanInput.Instantiate<BooleanInput>();
+					booleanInput.GetCheckButton().Toggled += (on => staticItem.Value = on);
+					booleanInput.GetCheckButton().Text = staticItem.Label;
+					container.AddChild(booleanInput);
 				}
 			}
 		}

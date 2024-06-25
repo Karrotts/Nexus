@@ -28,3 +28,7 @@ window/stretch/mode="canvas_items"
 [dotnet]
 
 project/assembly_name="Nexus.Godot"
+
+[gui]
+
+theme/default_font_multichannel_signed_distance_field=true

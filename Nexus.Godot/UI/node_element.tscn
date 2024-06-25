@@ -1,4 +1,4 @@
-[gd_scene load_steps=9 format=3 uid="uid://ttilam075kqy"]
+[gd_scene load_steps=10 format=3 uid="uid://ttilam075kqy"]
 
 [ext_resource type="Script" path="res://Scripts/CoreNodes/Godot/Nodes/NodeElement.cs" id="1_t6fw0"]
 [ext_resource type="PackedScene" uid="uid://bk21f657anhh6" path="res://UI/node_header.tscn" id="2_74q11"]
@@ -7,15 +7,14 @@
 [ext_resource type="PackedScene" uid="uid://cdsa7n8fok74o" path="res://UI/select_list_element.tscn" id="5_x0yid"]
 [ext_resource type="PackedScene" uid="uid://cw15vnuk0edwk" path="res://UI/display_element.tscn" id="6_hvn2r"]
 [ext_resource type="PackedScene" uid="uid://dfk0sxyqkpkmc" path="res://UI/number_input.tscn" id="7_hiinh"]
+[ext_resource type="PackedScene" uid="uid://c6tmdrl417sk3" path="res://UI/boolean_input.tscn" id="8_a84qh"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_s45qx"]
 bg_color = Color(0.23617, 0.257406, 0.291382, 1)
 
 [node name="NodeElement" type="PanelContainer"]
-offset_left = 200.0
-offset_top = 87.0
-offset_right = 397.0
-offset_bottom = 117.0
+offset_right = 197.0
+offset_bottom = 30.0
 pivot_offset = Vector2(0, -1)
 mouse_filter = 2
 mouse_default_cursor_shape = 1
@@ -27,6 +26,7 @@ NodeOutput = ExtResource("4_tocfq")
 SelectListElement = ExtResource("5_x0yid")
 DisplayElement = ExtResource("6_hvn2r")
 NumberInput = ExtResource("7_hiinh")
+BooleanInput = ExtResource("8_a84qh")
 
 [node name="Container" type="VBoxContainer" parent="."]
 layout_mode = 2
