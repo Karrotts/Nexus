@@ -33,6 +33,7 @@ namespace Nexus.Godot.UI
 		private List<NodeOutput> _outputs;
 	
 		public INexus Node;
+		public NexusOption Option;
 		public override void _Ready()
 		{
 			_headerHovered = false;
@@ -59,6 +60,7 @@ namespace Nexus.Godot.UI
 		public override void _Process(double delta)
 		{
 			HandleDrag();
+			HandleDelete();
 		}
 
 		public NodeInput GetInput(string inputLabel)
@@ -79,20 +81,29 @@ namespace Nexus.Godot.UI
 			throw new Exception("Output not found with label: " + outputLabel);
 		}
 
+		private void HandleDelete()
+		{
+			if (_headerHovered && Input.IsActionPressed("ui_cancel"))
+			{
+				_nodeManager.RemoveAllConnectionsFromElement(this);
+				QueueFree();
+			}
+		}
+
 		private void HandleDrag()
 		{
 			if (_nodeManager.IsMovingCamera) return;
-			Vector2 mousePos = GetViewport().GetMousePosition();
+			Vector2 mousePos = GetGlobalMousePosition();
 			if (_headerHovered && Input.IsMouseButtonPressed(MouseButton.Left) && !_isDragging && _nodeManager.CurrentlyDraggingNode == null)
 			{
 				_isDragging = true;
-				_mouseOffset = mousePos - Position;
+				_mouseOffset = mousePos - GlobalPosition;
 				_nodeManager.CurrentlyDraggingNode = GetInstanceId();
 			}
 
 			if (Input.IsMouseButtonPressed(MouseButton.Left) && _isDragging && _nodeManager.CurrentlyDraggingNode == GetInstanceId())
 			{
-				Position = mousePos - _mouseOffset;
+				GlobalPosition = mousePos - _mouseOffset;
 				return;
 			}
 

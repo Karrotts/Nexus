@@ -33,6 +33,18 @@ anchors_preset = 10
 anchor_right = 1.0
 grow_horizontal = 2
 
+[node name="FileDropdown" type="MenuButton" parent="CanvasLayer/MainMenu/HBoxContainer"]
+layout_mode = 2
+theme = SubResource("Theme_7d0nw")
+theme_type_variation = &"FlatMenuButton"
+theme_override_font_sizes/font_size = 12
+text = "File"
+item_count = 2
+popup/item_0/text = "Save"
+popup/item_0/id = 0
+popup/item_1/text = "Load"
+popup/item_1/id = 1
+
 [node name="NumberDropdown" type="MenuButton" parent="CanvasLayer/MainMenu/HBoxContainer"]
 layout_mode = 2
 theme = SubResource("Theme_7d0nw")
@@ -78,4 +90,5 @@ popup/item_0/id = 0
 
 [node name="Camera2D" type="Camera2D" parent="."]
 offset = Vector2(576, 324)
+zoom = Vector2(0.75, 0.75)
 position_smoothing_enabled = true

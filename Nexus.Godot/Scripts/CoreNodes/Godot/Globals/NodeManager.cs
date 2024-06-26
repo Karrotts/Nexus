@@ -2,11 +2,13 @@ using Godot;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using Godot.Collections;
 using Nexus;
 using Nexus.Elements.Basic;
 using Nexus.Elements.Boolean;
 using Nexus.Elements.Display;
 using Nexus.Godot;
+using Nexus.Godot.Scripts.File;
 using Nexus.Godot.UI;
 
 public partial class NodeManager : Node2D
@@ -30,12 +32,14 @@ public partial class NodeManager : Node2D
     private string _nodeElementPath = "res://UI/node_element.tscn";
     private PackedScene _nodeElementScene;
     private List<ConnectedIO> _connections;
+    private List<NodeElement> _nodeElements;
 
     public override void _Ready()
     {
         _nodeElementScene = ResourceLoader.Load(_nodeElementPath) as PackedScene;
         _lineRenderer = GetNode<LineRenderer>("/root/LineRenderer");
         _connections = new List<ConnectedIO>();
+        _nodeElements = new List<NodeElement>();
     }
 
     public override void _Process(double delta)
@@ -44,6 +48,28 @@ public partial class NodeManager : Node2D
         HandleNodeConnect();
         HandleNodeIoSelection();
         HandleLineUpdate();
+    }
+
+    public void DEMO_SAVE()
+    {
+        List<NexusItemInformation> itemInformations = new List<NexusItemInformation>();
+        foreach (NodeElement element in _nodeElements)
+        {
+            Godot.Collections.Dictionary<string, Variant> staticValues = new Godot.Collections.Dictionary<string, Variant>();
+            foreach (NexusStatic nexusStatic in element.Node.GetAllStatics())
+            {
+                //staticValues.Add(nexusStatic.Label, (Variant)nexusStatic.Value);
+            }
+            
+            itemInformations.Add(new NexusItemInformation()
+            {
+                GlobalPosition = element.GlobalPosition,
+                NexusOption = element.Option,
+                UUID = element.Node.GetUUID(),
+                //StaticStates = staticValues TODO -- need to be able to set this and retrieve this as a value even if its a list
+            });   
+        }
+        new NexusSerializer().Save(itemInformations);
     }
     
     public void HandleNodeCreate(NexusOption option)
@@ -55,23 +81,47 @@ public partial class NodeManager : Node2D
         {
             case NexusOption.MATH: 
                 element.Node = new MathNexus();
+                element.Option = NexusOption.MATH;
                 break;
             case NexusOption.TEXT_DISPLAY:
                 element.Node = new OutputNexus();
+                element.Option = NexusOption.TEXT_DISPLAY;
                 break;
             case NexusOption.NUMBER_INPUT:
                 element.Node = new NumberInputNexus();
+                element.Option = NexusOption.NUMBER_INPUT;
                 break;
             case NexusOption.BOOLEAN_INPUT:
                 element.Node = new BooleanNexus();
+                element.Option = NexusOption.BOOLEAN_INPUT;
                 break;
             case NexusOption.LOGIC:
                 element.Node = new LogicNexus();
+                element.Option = NexusOption.LOGIC;
                 break;
             case NexusOption.BYTE:
+                element.Node = new ByteNexus();
+                element.Option = NexusOption.BYTE;
                 break;
         }
         AddChild(element);
+        _nodeElements.Add(element);
+    }
+
+    public void RemoveAllConnectionsFromElement(NodeElement element)
+    {
+        List<ConnectedIO> filtered = _connections.Where(item => item.To.Element != element && item.From.Element != element).ToList();
+        List<ConnectedIO> toBeRemoved = _connections.Except(filtered).ToList();
+
+        foreach (ConnectedIO io in toBeRemoved)
+        {
+            _lineRenderer.RemoveLine(io.ConnectionName);
+            Nexus.Nexus.DisconnectIO(io.To.Element.Node,io.To.Io.GetLabelName());
+            
+        }
+
+        _nodeElements.Remove(element);
+        _connections = filtered;
     }
 
     private void HandleDrawLineFromSelected()
@@ -163,7 +213,7 @@ public partial class NodeManager : Node2D
 
     private void HandleNodeIoSelection()
     {
-        if (Input.IsMouseButtonPressed(MouseButton.Left))
+        if (Input.IsMouseButtonPressed(MouseButton.Left) && !IsMovingCamera)
         {
             if (HoveredIo != null && SelectedIo == null)
             {

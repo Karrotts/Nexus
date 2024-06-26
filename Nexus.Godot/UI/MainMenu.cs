@@ -4,6 +4,7 @@ using Nexus.Godot;
 
 public partial class MainMenu : Control
 {
+	private MenuButton _fileDropdown;
 	private MenuButton _numberDropdown;
 	private MenuButton _booleanDropdown;
 	private MenuButton _inputDropdown;
@@ -14,11 +15,25 @@ public partial class MainMenu : Control
 	// Called when the node enters the scene tree for the first time.
 	public override void _Ready()
 	{
+		_fileDropdown = GetNode<MenuButton>("HBoxContainer/FileDropdown");
 		_nodeManager = GetNode<NodeManager>("/root/NodeManager");
 		_numberDropdown = GetNode<MenuButton>("HBoxContainer/NumberDropdown");
 		_booleanDropdown = GetNode<MenuButton>("HBoxContainer/BooleanDropdown");
 		_inputDropdown = GetNode<MenuButton>("HBoxContainer/InputDropdown");
 		_outputDropdown = GetNode<MenuButton>("HBoxContainer/OutputDropdown");
+		
+		_fileDropdown.GetPopup().IdPressed += (id =>
+		{
+			switch (id)
+			{
+				case 0:
+					_nodeManager.DEMO_SAVE();
+					break;
+				case 1:
+					_nodeManager.HandleNodeCreate(NexusOption.MATH);
+					break;
+			}
+		});
 		
 		_numberDropdown.GetPopup().IdPressed += (id =>
 		{
