@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using Nexus;
 using Nexus.Elements.Basic;
+using Nexus.Elements.Boolean;
 using Nexus.Elements.Display;
 
 namespace Nexus.Godot.UI
@@ -34,6 +35,7 @@ namespace Nexus.Godot.UI
 	
 		public INexus Node;
 		public NexusOption Option;
+		
 		public override void _Ready()
 		{
 			_headerHovered = false;
@@ -189,6 +191,56 @@ namespace Nexus.Godot.UI
 			selectListElement.SetOptions(selectableList.GetOptions(), selectableList.GetIndexOfSelected());
 			selectListElement.GetOptionsButton().ItemSelected += (selected) => selectableList.SetSelected((int)selected);
 			container.AddChild(selectListElement);
+		}
+	}
+	
+	public class NodeElementBuilder(NodeElement element)
+	{
+		private NexusOption _option = NexusOption.MATH;
+		private Vector2 _position = new Vector2();
+
+		public NodeElementBuilder SetOption(NexusOption option)
+		{
+			_option = option;
+			return this;
+		}
+
+		public NodeElementBuilder SetPosition(Vector2 position)
+		{
+			_position = position;
+			return this;
+		}
+
+		public void Build()
+		{
+			element.Position = _position;
+			switch (_option)
+			{
+				case NexusOption.MATH: 
+					element.Node = new MathNexus();
+					element.Option = _option;
+					break;
+				case NexusOption.TEXT_DISPLAY:
+					element.Node = new OutputNexus();
+					element.Option = _option;
+					break;
+				case NexusOption.NUMBER_INPUT:
+					element.Node = new NumberInputNexus();
+					element.Option = _option;
+					break;
+				case NexusOption.BOOLEAN_INPUT:
+					element.Node = new BooleanNexus();
+					element.Option = _option;
+					break;
+				case NexusOption.LOGIC:
+					element.Node = new LogicNexus();
+					element.Option = _option;
+					break;
+				case NexusOption.BYTE:
+					element.Node = new ByteNexus();
+					element.Option = _option;
+					break;
+			}
 		}
 	}
 }

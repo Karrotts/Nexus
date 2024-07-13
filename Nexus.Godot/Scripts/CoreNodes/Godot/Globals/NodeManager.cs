@@ -69,43 +69,35 @@ public partial class NodeManager : Node2D
                 //StaticStates = staticValues TODO -- need to be able to set this and retrieve this as a value even if its a list
             });   
         }
-        new NexusSerializer().Save(itemInformations);
+        new NexusSerializer().Save(itemInformations, new List<NexusConnectionInformation>());
+    }
+
+    public void DEMO_LOAD()
+    {
+        Clear();
+        foreach (var e in new NexusSerializer().Load())
+        {
+            NodeElement element = _nodeElementScene.Instantiate<NodeElement>();
+            new NodeElementBuilder(element)
+                .SetPosition(e.GlobalPosition)
+                .SetOption(e.NexusOption)
+                .Build();
+            AddChild(element);
+            _nodeElements.Add(element);
+        }
     }
     
-    public void HandleNodeCreate(NexusOption option)
+    public NodeElement HandleNodeCreate(NexusOption option)
     {
         // should add this to a specific container but this is fine for now.
         NodeElement element = _nodeElementScene.Instantiate<NodeElement>();
-        element.Position = _lineRenderer.GlobalPosition - element.Size / 2;
-        switch (option)
-        {
-            case NexusOption.MATH: 
-                element.Node = new MathNexus();
-                element.Option = NexusOption.MATH;
-                break;
-            case NexusOption.TEXT_DISPLAY:
-                element.Node = new OutputNexus();
-                element.Option = NexusOption.TEXT_DISPLAY;
-                break;
-            case NexusOption.NUMBER_INPUT:
-                element.Node = new NumberInputNexus();
-                element.Option = NexusOption.NUMBER_INPUT;
-                break;
-            case NexusOption.BOOLEAN_INPUT:
-                element.Node = new BooleanNexus();
-                element.Option = NexusOption.BOOLEAN_INPUT;
-                break;
-            case NexusOption.LOGIC:
-                element.Node = new LogicNexus();
-                element.Option = NexusOption.LOGIC;
-                break;
-            case NexusOption.BYTE:
-                element.Node = new ByteNexus();
-                element.Option = NexusOption.BYTE;
-                break;
-        }
+        new NodeElementBuilder(element)
+            .SetPosition(_lineRenderer.GlobalPosition - element.Size / 2)
+            .SetOption(option)
+            .Build();
         AddChild(element);
         _nodeElements.Add(element);
+        return element;
     }
 
     public void RemoveAllConnectionsFromElement(NodeElement element)
@@ -122,6 +114,16 @@ public partial class NodeManager : Node2D
 
         _nodeElements.Remove(element);
         _connections = filtered;
+    }
+
+    public void Clear()
+    {
+        while (_nodeElements.Count > 0)
+        {
+            NodeElement element = _nodeElements[0];
+            RemoveAllConnectionsFromElement(element);
+            element.QueueFree();
+        }
     }
 
     private void HandleDrawLineFromSelected()

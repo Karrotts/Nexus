@@ -30,7 +30,7 @@ public partial class MainMenu : Control
 					_nodeManager.DEMO_SAVE();
 					break;
 				case 1:
-					_nodeManager.HandleNodeCreate(NexusOption.MATH);
+					_nodeManager.DEMO_LOAD();
 					break;
 			}
 		});

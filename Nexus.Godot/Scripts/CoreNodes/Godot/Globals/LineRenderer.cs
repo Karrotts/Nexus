@@ -1,3 +1,4 @@
+using System.Linq;
 using Godot;
 using Godot.Collections;
 
@@ -19,10 +20,28 @@ public partial class LineRenderer : Control
 
     public override void _Draw()
     {
+        Dictionary<Color, Array<Vector2>> lines = new Dictionary<Color, Array<Vector2>>();
         foreach (string key in _lines.Keys)
         {
             DrawLine line = _lines[key];
-            DrawLine(line.From - Position , line.To - Position, line.Color, (float)line.Size);
+            if (lines.TryGetValue(line.Color, out Array<Vector2> points))
+            {
+                points.Add(line.From - Position);
+                points.Add(line.To - Position);
+                lines[line.Color] = points;
+            }
+            else
+            {
+                points = new Array<Vector2>();
+                points.Add(line.From - Position);
+                points.Add(line.To - Position);
+                lines[line.Color] = points;
+            }
+        }
+
+        foreach (var multiline in lines.Keys)
+        {
+            DrawMultiline(lines[multiline].ToArray(), multiline, 4f);
         }
     }
     
